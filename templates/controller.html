@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+button {
+  touch-action: manipulation;
+}
+
+</style>
+
+<script type="text/javascript">
+
+    chartstyle = 2;
+    console.log('Mobile summary page');
+    ip = ""
+    temp1value = 68.5;
+    temp2value = 72.5;
+    targetvalues = [0, 0];
+    targetincrement = 1.0
+
+    function updateDisplay() {
+        console.log("Reload data");
+        for (var i = 1; i < 3; i++) {
+            let s = i.toString();
+            $.getJSON(ip + '/values/' + s, function(d) {
+                $('#temp' + s).html(d.temperature.toFixed(1));
+                $('#state' + s).html(d.status);
+                $('#program' + s).html(d.program);
+                $("#currentLastUpdated").html(d.time);
+                lastupdatetime = d.time;
+            });
+        }
+    }
+
+    function updateTargets() {
+        console.log("Reload data");
+        for (var i = 1; i < 3; i++) {
+            let s = i.toString();
+            $.getJSON(ip + '/values/' + s, function(d) {
+                channel = d.channelid
+                channelstr = channel.toString();
+                $('#target' + channelstr).html(d.target.toFixed(1));
+                targetvalues[channel - 1] = d.target;
+            });
+        }
+    }
+
+    function setTargetValue(channel, targetvalue) {
+        targetvalues[channel - 1] = targetvalue;
+        let s = channel.toString();
+        $("#target" + s).text(targetvalues[channel -1].toFixed(1));
+
+        $.ajax({
+                url: '/values/' + s,
+                type: 'POST',
+                data: {
+                    target: targetvalues[channel - 1],
+                },
+                success: function () {
+                }
+            })
+    }
+
+
+    $(document).ready(function(){
+
+        updateDisplay();
+        updateTargets();
+
+        setInterval(updateDisplay, 2000)
+
+        $("#buttontargetplus1").click(function() {
+            setTargetValue(1, targetvalues[0] + targetincrement)
+        });
+
+        $("#buttontargetminus1").click(function() {
+            setTargetValue(1, targetvalues[0] - targetincrement)
+        });
+
+        $("#buttontargetplus2").click(function() {
+            setTargetValue(2, targetvalues[1] + targetincrement)
+        });
+
+        $("#buttontargetminus2").click(function() {
+            setTargetValue(2, targetvalues[1] - targetincrement)
+        });
+
+        //updateCurrentTemperature()
+
+        $('#reloadCharts').click(function() {
+            updateDisplay();
+        });
+
+    });
+</script>
+
+
+<table class="table table-striped table-dark">
+  <thead>
+    <tr>
+      <th style="width: 16%" scope="col"></th>
+      <th class="text-center" style="width: 42%" scope="col">Sensor 1</th>
+      <th class="text-center" style="width: 42%" scope="col">Sensor 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th class="text-center" scope="row">Current
+          <div id="currentLastUpdated" class="col">
+                      13:44:32
+                  </div></th>
+      <td class="text-center" ><div id = "temp1" class="display-4">0</div></td>
+      <td class="text-center" ><div id = "temp2" class="display-4">0</div></td>
+    </tr>
+    <tr>
+      <th class="text-center" scope="row">Target</th>
+        <td class="text-center"><div id = "target1" class="display-4">0</div><p></p>
+          <div class = "container">
+              <div class = "row">
+                  <div class="col">
+                      <button id = "buttontargetminus1" type="button" class="btn btn-primary btn-lg btn-block">-</button>
+                  </div>
+                  <div class="col">
+                      <button id = "buttontargetplus1" type="button" class="btn btn-danger btn-lg btn-block">+</button>
+                  </div>
+                </div>
+          </div>
+      </td>
+        <td class="text-center"><div id = "target2" class="display-4">0</div><p></p>
+      <div class = "container">
+              <div class = "row">
+                  <div class="col">
+                      <button id = "buttontargetminus2" type="button" class="btn btn-primary btn-lg btn-block">-</button>
+                  </div>
+                  <div class="col">
+                      <button id = "buttontargetplus2" type="button" class="btn btn-danger btn-lg btn-block">+</button>
+                  </div>
+                </div>
+          </div>
+      </td>
+    </tr>
+    <tr>
+      <th class="text-center" scope="row">Status</th>
+        <td class="text-center"><span id="state1">Heating</span></td>
+        <td class="text-center"><span id="state2">Off></span></td>
+    </tr>
+  <tr>
+      <th class="text-center" scope="row">Program</th>
+      <td class="text-center"><span id="program1">Keep Temperature</span></td>
+      <td class="text-center"><span id="program2">Change Temperature to 55.0 by 12:44:30 on 10/13</span></td>
+    </tr>
+  </tbody>
+</table>
+
+
+</div>
+</div>
+
+
+{% endblock %}
+

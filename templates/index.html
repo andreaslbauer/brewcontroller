@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h3>{% block title %}Brew Controller{% endblock %}</h3>
+{% endblock %}
+
+{% block content %}
+
+<body>
+    <hr>
+    <br>
+    <div class="container">
+    <div class="p-1">
+
+        <h3>Features</h3>
+            <a href="/controller">Brew Controller</a><br>
+
+        <h3>Logs</h3>
+            <a href="/webapplog">Web App Log</a><br>
+
+        <h3>Admin</h3>
+            <a href="/reboot">Reboot the Raspberry PI</a><br>
+            <a href="/shutdown">Shut down the Raspberry PI</a><br>
+
+    </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}
+
