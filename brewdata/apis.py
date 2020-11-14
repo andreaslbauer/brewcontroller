@@ -8,7 +8,7 @@ def getTemperatureData(channel = 1):
 
     try:
 
-        if channel == 1:
+        if channel <  3:
             url = "http://localhost:5000"
         else:
             url = "http://picam:5000"
