@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+button {
+  touch-action: manipulation;
+}
+
+</style>
+
+<script type="text/javascript">
+
+    chartstyle = 2;
+    console.log('data page');
+    ip = ""
+    temp1value = 68.5;
+    temp2value = 72.5;
+
+    function updateDisplay() {
+        console.log("Reload data");
+
+        console.log("Reload data");
+        for (var i = 1; i < 3; i++) {
+            let s = i.toString();
+            $.getJSON(ip + '/values/' + s, function(d) {
+                $('#temp' + s).html(d.temperature.toFixed(1));
+                $("#currentLastUpdated").html(d.time);
+                lastupdatetime = d.time;
+            });
+        }
+
+        $.getJSON(ip + '/tablevalues', function(d) {
+
+            let s = "<tbody>";
+            data = d.data;
+            for (var rowidx = 0; rowidx < data.length; rowidx++) {
+                s = s + "<tr>";
+                rowdata = data[rowidx];
+                for (var colidx = 0; colidx < rowdata.length; colidx++) {
+                    s = s + "<td>";
+                    let v = rowdata[colidx];
+                    if (typeof v === 'number') {
+                        v = v.toFixed(1);
+                    }
+                    s = s + v.toString();
+                    s = s + "</td>";
+                }
+                s = s + "A";
+                s = s + "</tr>";
+            }
+            s = s + "</tbody>";
+            console.log(s);
+            $('#datatable').html(s);
+        });
+    }
+
+
+    $(document).ready(function(){
+
+        // update hostname
+        $.getJSON('/serverinfo', function(d) {
+            $('#hostname').html(d.hostname);
+        });
+
+        updateDisplay();
+
+        setInterval(updateDisplay, 500000);
+
+    });
+</script>
+
+
+<table class="table table-striped table-dark">
+  <tbody>
+    <tr>
+      <th class="text-center" style="width: 16%" scope="col">
+          Current
+          <div id="currentLastUpdated" class="col">
+                      13:44:32
+                  </div></th>
+      <td class="text-center" style="width: 42%" scope="col"><div id = "temp1">0</div></td>
+      <td class="text-center" style="width: 42%" scope="col"><div id = "temp2">0</div></td>
+    </tr>
+  </tbody>
+</table>
+
+<table id = "datatable" class="table table-striped table-dark">
+</table>
+
+
+<table class="table table-striped table-dark">
+    <tbody>
+    <tr>
+        <th></th>
+        <td class="text-center">
+            <div class="col">
+                <a href="/controller" class="btn btn-secondary" role="button">Controller</a>
+                <a href="/chart" class="btn btn-secondary" role="button">Chart</a>
+            </div>
+        </td>
+        <td class="text-center">
+            <div class="col">
+                <button id="b1" type="button" class="btn btn-secondary">Programs</button>
+                <button id="b5" type="button" class="btn btn-secondary">Options</button>
+            </div>
+        </td>
+    </tr>
+      </tbody>
+</table>
+
+
+
+{% endblock %}
+

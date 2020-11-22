@@ -17,8 +17,8 @@ button {
 <script type="text/javascript">
 
     chartstyle = 2;
-    console.log('Mobile summary page');
-    ip = ""
+    console.log('Brewcontroller chart page');
+    ip = "http://pibrew:5000"
     temp1value = 68.5;
     temp2value = 72.5;
     targetvalues = [0, 0];
@@ -70,11 +70,6 @@ button {
 
     $(document).ready(function(){
 
-        // update hostname
-        $.getJSON('/serverinfo', function(d) {
-            $('#hostname').html(d.hostname);
-        });
-
         updateDisplay();
         updateTargets();
 
@@ -114,67 +109,21 @@ button {
           <div id="currentLastUpdated" class="col">
                       13:44:32
                   </div></th>
-      <td class="text-center" style="width: 42%" scope="col"><div id = "temp1" class="display-4">0</div></td>
-      <td class="text-center" style="width: 42%" scope="col"><div id = "temp2" class="display-4">0</div></td>
     </tr>
     <tr>
       <th class="text-center" scope="row">Target</th>
         <td class="text-center"><div id = "target1" class="display-4">0</div><p></p>
           <div class = "container">
-              <div class = "row">
-                  <div class="col">
-                      <button id = "buttontargetminus1" type="button" class="btn btn-primary btn-block">-</button>
-                  </div>
-                  <div class="col">
-                      <button id = "buttontargetplus1" type="button" class="btn btn-danger btn-block">+</button>
-                  </div>
-                </div>
+<div id="channel1Status"></div><div id="chart"></div>
           </div>
       </td>
-        <td class="text-center"><div id = "target2" class="display-4">0</div><p></p>
-      <div class = "container">
-              <div class = "row">
-                  <div class="col">
-                      <button id = "buttontargetminus2" type="button" class="btn btn-primary btn-block">-</button>
-                  </div>
-                  <div class="col">
-                      <button id = "buttontargetplus2" type="button" class="btn btn-danger btn-block">+</button>
-                  </div>
-                </div>
-          </div>
-      </td>
-    </tr>
-    <tr>
-      <th class="text-center" scope="row">Status</th>
-        <td class="text-center"><span id="state1">Heating</span></td>
-        <td class="text-center"><span id="state2">Off></span></td>
-    </tr>
-  <tr>
-      <th class="text-center" scope="row">Program</th>
-      <td class="text-center"><span id="program1">Keep Temperature</span></td>
-      <td class="text-center"><span id="program2">Change Temperature to 55.0 by 12:44:30 on 10/13</span></td>
-    </tr>
-
-
-    <tr>
-        <th></th>
-        <td class="text-center">
-            <div class="col">
-                <a href="/data" class="btn btn-secondary" role="button">Data</a>
-                <a href="http://pibrew:5000/detailedcharts" class="btn btn-secondary" role="button">Chart</a>
-                <button id="b4" type="button" class="btn btn-secondary">Changes</button>
-            </div>
-        </td>
-        <td class="text-center">
-            <div class="col">
-                <button id="b1" type="button" class="btn btn-secondary">Programs</button>
-                <button id="b5" type="button" class="btn btn-secondary">Options</button>
-            </div>
-        </td>
     </tr>
       </tbody>
 </table>
 
+
+</div>
+</div>
 
 
 {% endblock %}

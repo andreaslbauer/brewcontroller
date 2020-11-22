@@ -16,6 +16,7 @@ import threading
 
 controllerthread = None
 
+
 # the main routine
 if __name__ == '__main__':
 
@@ -27,7 +28,7 @@ if __name__ == '__main__':
 
     try:
         hostname = socket.gethostname()
-        OurHostname = hostname
+        webapp.OurHostName = hostname
         externalip = requests.get('https://api.ipify.org').text
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(('8.8.8.8', 1))  # connect() for UDP doesn't send packets

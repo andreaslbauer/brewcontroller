@@ -16,6 +16,8 @@ import time
 import datetime
 from brewdata import apis, brewcontroller
 
+OurHostName = ''
+
 # sqlite3 access API
 
 import datetime
@@ -66,6 +68,14 @@ def summarycharts():
 @app.route('/programs')
 def detailedcharts():
     return render_template('programs.html')
+
+@app.route('/data')
+def data():
+    return render_template('data.html')
+
+@app.route('/chart')
+def chart():
+    return render_template('chart.html')
 
 
 @app.route('/webapplog')
@@ -152,9 +162,61 @@ class ControllerValues(Resource):
         brewcontroller.controller.channels[sensorid - 1].store()
 
 
+class ServerInfo(Resource):
+
+    def get(self):
+        global OurHostName
+        return jsonify({'hostname': OurHostName})
+
+
+class TableValues(Resource):
+
+    def get(self):
+        table = {}
+
+        # build the header row
+        header = []
+        header.append("Date/Time")
+        header.append("Sensor 1")
+        header.append("Changes 1")
+        header.append("Sensor 2")
+        header.append("Changes 2")
+
+        rowCount = 10
+        sensorCount = 2
+
+        # build the data array
+        tabledata = []
+
+        data = []
+        for sensorId in range (1, sensorCount + 1):
+            data.append(apis.getValueArray(sensorId, rowCount, 80))
+
+        for i in range(0, rowCount):
+            row = []
+            for s in range(0, sensorCount):
+                if (s == 0):
+                    row.append(data[s][i]["time"])
+
+                row.append(data[s][i]["value"])
+
+                if (i > 0):
+                    row.append(data[s][i]["value"]- data[s][i - 1]["value"])
+                else:
+                    row.append("")
+
+            tabledata.append(row)
+
+        table["header"] = header
+        table["data"] = tabledata
+        return jsonify(table)
+
 
 # add REST end points
 api.add_resource(ControllerValues, '/values/<int:sensorid>')
+api.add_resource(ServerInfo, '/serverinfo')
+api.add_resource(TableValues, '/tablevalues')
+
 
 
 
