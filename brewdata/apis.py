@@ -8,10 +8,13 @@ def getTemperatureData(channel = 1):
 
     try:
 
-        if channel <  3:
+        if channel <  1:
             url = "http://localhost:5000"
         else:
             url = "http://picam:5000"
+
+        url = "http://localhost:5000"
+        #url = "http://localhost:5000"
 
         path = "/datapoint/" + str(channel)
         myResponse = requests.get(url + path)
@@ -34,6 +37,9 @@ def getTemperatureData(channel = 1):
     logging.error("Unable to get temperature data at: %s", url + path)
 
     return None
+
+def getProgramName():
+    return "Multistep Mash"
 
 def getValueArray(sensor = 1, rows = 5, interleave = 1):
 

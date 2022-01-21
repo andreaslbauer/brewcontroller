@@ -89,6 +89,7 @@ class Controller:
                     try:
 
                         channel = self.channels[c]
+                        channel.program = apis.getProgramName()
 
                         channel.update()
                         t = channel.temperature

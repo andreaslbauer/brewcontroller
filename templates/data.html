@@ -12,6 +12,13 @@ button {
   touch-action: manipulation;
 }
 
+* {
+margin:0px;
+padding: 0px;
+margin-bottom: 0;
+margin-top: 0;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -75,12 +82,11 @@ button {
     });
 </script>
 
-
+<p>
 <table class="table table-striped table-dark">
   <tbody>
     <tr>
       <th class="text-center" style="width: 16%" scope="col">
-          Current
           <div id="currentLastUpdated" class="col">
                       13:44:32
                   </div></th>
@@ -89,11 +95,8 @@ button {
     </tr>
   </tbody>
 </table>
-
-<table id = "datatable" class="table table-striped table-dark">
+<table id = "datatable" class="table table-striped table-condensed table-dark">
 </table>
-
-
 <table class="table table-striped table-dark">
     <tbody>
     <tr>
@@ -113,6 +116,7 @@ button {
     </tr>
       </tbody>
 </table>
+</p>
 
 
 

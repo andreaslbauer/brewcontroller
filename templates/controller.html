@@ -78,7 +78,8 @@ button {
         updateDisplay();
         updateTargets();
 
-        setInterval(updateDisplay, 2000)
+        // reload every 1000 ms
+        setInterval(updateDisplay, 1000)
 
         $("#buttontargetplus1").click(function() {
             setTargetValue(1, targetvalues[0] + targetincrement)

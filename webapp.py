@@ -182,7 +182,7 @@ class TableValues(Resource):
         header.append("Sensor 2")
         header.append("Changes 2")
 
-        rowCount = 10
+        rowCount = 6
         sensorCount = 2
 
         # build the data array
@@ -190,7 +190,7 @@ class TableValues(Resource):
 
         data = []
         for sensorId in range (1, sensorCount + 1):
-            data.append(apis.getValueArray(sensorId, rowCount, 80))
+            data.append(apis.getValueArray(sensorId, rowCount, 160))
 
         for i in range(0, rowCount):
             row = []
