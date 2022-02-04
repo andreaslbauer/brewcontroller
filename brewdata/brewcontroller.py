@@ -69,22 +69,40 @@ class Controller:
     def runControlLoop(self):
         pid = os.getpid()
         logging.info("Controller thread started for %s channels, PID %i", self.numberchannels, pid)
-        pidfile = open("brewcontrollerpid.txt", "w")
-        pidfile.write(str(pid))
-        pidfile.close()
+
+        try:
+            pidfile = open("brewcontrollerpid.txt", "w")
+            pidfile.write(str(pid))
+            pidfile.close()
+
+        except Exception as e:
+            logging.error("Exception when trying to write pid file")
+            logging.error(e)
+
+        time.sleep(3)
 
         keeprunning = True
         while keeprunning:
 
-            pidfile = open("brewcontrollerpid.txt", "r")
-            pidfromfile = pidfile.read()
-            pidfile.close()
+            pidfromfile = "1"
+
+            try:
+                pidfile = open("brewcontrollerpid.txt", "r")
+                pidfromfile = pidfile.read()
+                pidfile.close()
+                logging.info("Latest PID from file is %s",
+                             pidfromfile)
+
+            except Exception as e:
+                logging.error("Exception when trying to read pid file in controller thread")
+                logging.error(e)
 
             if (pid != int(pidfromfile)):
                 logging.info("Controller thread PID is %i, latest PID from file is %s, exiting controller thread", pid, pidfromfile)
                 keeprunning = False
             else:
 
+                #logging.info("Controller thread %i running, managing %i sensors", pid, self.numberchannels)
                 for c in range(0, self.numberchannels):
                     try:
 
@@ -93,6 +111,9 @@ class Controller:
 
                         channel.update()
                         t = channel.temperature
+
+                        logging.info("Looping channel %i - temperature is %f, target is %f",
+                                     channel.channelid, t, channel.target)
 
                         if (t != None):
 
